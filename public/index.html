@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style1.css">
+    <title>Document</title>
+</head>
+<body class="">
+   <header class="h-12 w-full bg-gray-200 shadow-lg ">
+        <h1 class="px-12 py-2 text-2xl capitalize font-bold text-gray-600 font-serif"> weather-Stack</h1>
+        <div class="mx-8 absolute right-0 top-0 flex">
+        <h1 class="text-xl uppercase py-3 mx-2 bg-o font-bold text-orange-500">umbrella</h1>
+        <img class="h-12 w-12"src="image1.png" alt="">
+        </div>
+    </header>
+    <section>
+    <div id="searchBar" class="mx-4">
+    <input class="w-64 h-8 capitalize mx-2 " type="text"  placeholder="search">
+    <button id="button" class="w-20 h-8 bg-black font-semibold text-white text-center text-medium font-sans hover:bg-blue-600" type="submit">submit</button>
+    </div>
+    <div id="box" class="w-2/5 bg-blue-900 border-2 absolute shadow-2xl text-white">
+    <h1 id="name" class="capitalize text-3xl font-bold mx-4 my-2">name</h1>
+    <h2 id="country" class="capitalize text-md font-semibold mx-4">country</h2>
+    <div class="h-20 w-20 absolute mx-4 my-4 top-0 right-0 bg-transparent">
+    <svg id="moon" class="absolute " width="54" height="72" viewBox="0 0 54 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path  d="M20.0722 42.8211C28.9398 61.5373 53.7505 68.3606 53.7505 68.3606C35.0343 77.2282 12.6732 69.2443 3.80558 50.5281C-5.06202 31.8118 2.92189 9.45069 21.6381 0.583099C21.6381 0.583099 11.2046 24.1048 20.0722 42.8211Z" fill="#FAFF0C"/>
+    </svg>
+    <svg id="sun" class="absolute  " width="75" height="75" viewBox="0 0 75 75" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path  d="M75 37.5C75 58.2107 58.2107 75 37.5 75C16.7893 75 0 58.2107 0 37.5C0 16.7893 16.7893 0 37.5 0C58.2107 0 75 16.7893 75 37.5Z" fill="#FAFF0C"/>
+    </svg>
+    
+            
+
+    </div>
+    <div id="data">
+    <h1 id="humid">humidity</h1>
+    <h1 id="temp">temperature</h1>
+    </div>
+    
+    <div id="wea">   
+    <div id="w_img" class="my-2 h-40 w-40 bg-transparent"></div>   
+    <h2 id="weather" class="text-center text-2xl">weather</h2>
+    </div>
+    <h4 id="lat" class="capitalize text-md absolute bottom-0 mx-4 my-32">latitude</h4>
+    <h4 id="lon" class="capitalize text-md absolute bottom-0 mx-40 my-32 ">longitude</h4>
+    <h4 id="time" class="capitalize text-md absolute bottom-0 right-0 my-24 mx-4">time</h4>
+    <div id="info" class="grid grid-flow-col grid-cols-3 grid-rows-2 h-24 text-base text-black tetxt-center font-semibold uppercase absolute w-full bottom-0 bold">
+    <div class="bg-gray-300 py-3" ><h2 id="w_speed">wind speed</h2></div>
+    <div class="bg-gray-500 py-3"><h2 id="w_degree">wind degree</h2></div>
+    <div class="bg-gray-500 py-3"><h2 id="prep">precipitation</h2></div>
+    <div class="bg-gray-300 py-3"><h2 id="press">pressure</h2></div>
+    <div class="bg-gray-300 py-3"><h2 id="cloud"> cloud</h2></div>
+    <div class="bg-gray-500 py-3"><h2 id="uv">uv-index</h2></div>
+    </div>
+    
+
+    </div>
+    </section>
+    <script>
+       const moon="M20.0722 42.8211C28.9398 61.5373 53.7505 68.3606 53.7505 68.3606C35.0343 77.2282 12.6732 69.2443 3.80558 50.5281C-5.06202 31.8118 2.92189 9.45069 21.6381 0.583099C21.6381 0.583099 11.2046 24.1048 20.0722 42.8211Z"; //fill="#FAFF0C"
+       const sun="M75 37.5C75 58.2107 58.2107 75 37.5 75C16.7893 75 0 58.2107 0 37.5C0 16.7893 16.7893 0 37.5 0C58.2107 0 75 16.7893 75 37.5Z";
+        document.getElementById("sun").addEventListener('click',()=>
+        {
+         document.getElementById("sun").style.visibility="hidden"; 
+         document.getElementById("moon").style.visibility="visible";
+         document.getElementById("box").style.backgroundColor="#2a4365"; 
+        });
+        document.getElementById("moon").addEventListener('click',()=>
+        {
+         document.getElementById("moon").style.visibility="hidden";
+         document.getElementById("sun").style.visibility="visible";   
+         document.getElementById("box").style.backgroundColor="#90cdf4"; 
+        });
+        var access='6be39bf52c610892858b92c7672d58aa';
+        document.getElementById("button").addEventListener('click',()=>{
+        var city=document.querySelector("input").value;
+         async function getAll()
+        {
+            const data=await fetch('http://api.weatherstack.com/current?access_key='+access+'&query='+city)
+            const getData=await data.json();
+            console.log(getData);
+            var prep=getData.current.precip;
+            var cloud=getData.current.cloudcover;
+            var temp= getData.current.temperature;
+            document.getElementById("name").innerText=city;
+            document.getElementById("country").innerText=getData.location.country;
+            document.getElementById("temp").innerText='Temperature -\t\t'+getData.current.temperature+'°C';
+            document.getElementById("humid").innerText='Humidity -\t\t'+getData.current.humidity+' %';
+            document.getElementById("weather").innerText=getData.current.weather_descriptions;
+            document.getElementById("lat").innerText='Latitude ::: \t\t'+getData.location.lat;
+            document.getElementById("lon").innerText='Longitude ::: \t\t'+getData.location.lon;
+            document.getElementById("w_speed").innerText='WIND SPEED -\t'+getData.current.wind_speed+'Km/h';
+            document.getElementById("w_degree").innerText='WIND DEGREE -\t'+getData.current.wind_degree+' °';
+            document.getElementById("press").innerText='PRESSURE -\t'+getData.current.pressure+' MBar';
+            document.getElementById("uv").innerText='UV-INDEX -\t'+getData.current.uv_index;
+            document.getElementById("time").innerText='Current Time :: '+getData.location.localtime;
+            document.getElementById("prep").innerText='PRECIPITATION -'+getData.current.precip+ ' mm';
+            document.getElementById("cloud").innerText='CLOUD-COVER -'+getData.current.cloudcover+' % ';
+            console.log(typeof(getData.current.precip));
+           
+          
+            if(prep > 2 && (cloud <=50 && cloud>=0))
+            {
+                document.getElementById("w_img").style.backgroundImage="url('lightRain.webp')";
+                document.getElementById("w_img").style.backgroundSize="cover";
+                document.getElementById("w_img").style.backgroundPosition="center";
+             }
+             else if(prep > 2 && (cloud <=100 && cloud >50))
+            {
+                document.getElementById("w_img").style.backgroundImage="url('heavyrain.gif')";
+                document.getElementById("w_img").style.backgroundSize="cover";
+                document.getElementById("w_img").style.backgroundPosition="center";
+            }
+            else if(cloud>20 && (temp>17 && temp<25))
+            {
+                document.getElementById("w_img").style.backgroundImage="url('sunnrcloud.gif')";
+                document.getElementById("w_img").style.backgroundSize="cover";
+                document.getElementById("w_img").style.backgroundPosition="center";
+            }
+             else if((cloud<20 && cloud>5) && (temp>25 && temp<30))
+            {
+                document.getElementById("w_img").style.backgroundImage="url('200w (1).webp')";
+                document.getElementById("w_img").style.backgroundSize="cover";
+                document.getElementById("w_img").style.backgroundPosition="center";
+            }
+            else
+            {   //document.getElementById("w_img").style.position="absolute";
+            document.getElementById("w_img").style.backgroundImage="url('giphy (2).webp')";
+           // document.getElementById("w_img").style.backgroundImage="url('lightRain.gif')";
+
+            document.getElementById("w_img").style.backgroundSize="cover";
+            document.getElementById("w_img").style.backgroundPosition="center";
+        }
+              
+        }
+        getAll();
+        
+    }   
+    );
+    </script>
+</body>
+</html>
